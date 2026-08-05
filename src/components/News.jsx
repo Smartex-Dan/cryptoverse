@@ -8,7 +8,6 @@ import Loader from './Loader';
 const demoImage = 'https://www.bing.com/th?id=OVFT.mpzuVZnv8dwIMRfQGPbOPC&pid=News';
 
 const { Text, Title } = Typography;
-const { Option } = Select;
 
 const News = ({ simplified }) => {
   const [newsCategory, setNewsCategory] = useState('Cryptocurrency');
@@ -16,6 +15,11 @@ const News = ({ simplified }) => {
   const { data: cryptoNews } = useGetCryptoNewsQuery({ newsCategory, count: simplified ? 6 : 12 });
 
   if (!cryptoNews?.value) return <Loader />;
+
+  const cryptoOptions = [
+    { value: 'Cryptocurrency', label: 'Cryptocurrency' },
+    ...(data?.data?.coins?.map((currency) => ({ value: currency.name, label: currency.name })) || []),
+  ];
 
   return (
     <Row gutter={[24, 24]}>
@@ -25,13 +29,11 @@ const News = ({ simplified }) => {
             showSearch
             className="select-news"
             placeholder="Select a Crypto"
-            optionFilterProp="children"
+            optionFilterProp="label"
             onChange={(value) => setNewsCategory(value)}
-            filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          >
-            <Option value="Cryptocurency">Cryptocurrency</Option>
-            {data?.data?.coins?.map((currency) => <Option value={currency.name}>{currency.name}</Option>)}
-          </Select>
+            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+            options={cryptoOptions}
+          />
         </Col>
       )}
       {cryptoNews.value.map((news, i) => (
