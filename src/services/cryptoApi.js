@@ -1,15 +1,15 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Note: In Vite, env vars must be prefixed with VITE_ (was REACT_APP_ in CRA)
 const cryptoApiHeaders = {
-  'x-rapidapi-host': import.meta.env.VITE_CRYPTO_RAPIDAPI_HOST,
-  'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
+  "x-rapidapi-host": import.meta.env.VITE_CRYPTO_RAPIDAPI_HOST,
+  "x-rapidapi-key": import.meta.env.VITE_RAPIDAPI_KEY,
 };
 
 const createRequest = (url) => ({ url, headers: cryptoApiHeaders });
 
 export const cryptoApi = createApi({
-  reducerPath: 'cryptoApi',
+  reducerPath: "cryptoApi",
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_CRYPTO_API_URL }),
   endpoints: (builder) => ({
     getCryptos: builder.query({
@@ -21,12 +21,13 @@ export const cryptoApi = createApi({
     }),
 
     getCryptoHistory: builder.query({
-      query: ({ coinId, timeperiod }) => createRequest(`coin/${coinId}/history?timeperiod=${timeperiod}`),
+      query: ({ coinId, timeperiod }) =>
+        createRequest(`coin/${coinId}/history?timeperiod=${timeperiod}`),
     }),
 
     // Note: To access this endpoint you need premium plan
     getExchanges: builder.query({
-      query: () => createRequest('/exchanges'),
+      query: () => createRequest("/exchanges"),
     }),
   }),
 });
@@ -34,6 +35,5 @@ export const cryptoApi = createApi({
 export const {
   useGetCryptosQuery,
   useGetCryptoDetailsQuery,
-  useGetExchangesQuery,
   useGetCryptoHistoryQuery,
 } = cryptoApi;

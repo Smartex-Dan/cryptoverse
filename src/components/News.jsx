@@ -12,8 +12,20 @@ const { Text, Title } = Typography;
 const News = ({ simplified }) => {
   const [newsCategory, setNewsCategory] = useState('Cryptocurrency');
   const { data } = useGetCryptosQuery(100);
-  const { data: cryptoNews } = useGetCryptoNewsQuery({ newsCategory, count: simplified ? 6 : 12 });
+  const { data: cryptoNews, isLoading, isError, error } = useGetCryptoNewsQuery({ newsCategory, count: simplified ? 6 : 12 });
 
+  if (isLoading) return <Loader />;
+  if (isError) {
+    console.error(error);
+    return <Text>Something went wrong.</Text>;
+  } 
+  
+  if (isLoading) return <Loader />;
+  if (isError) {
+    console.error('News API error:', error);
+    return <Text type="danger">Couldn't load news right now — check the console for details.</Text>;
+  }
+  
   if (!cryptoNews?.value) return <Loader />;
 
   const cryptoOptions = [

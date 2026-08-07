@@ -9,7 +9,6 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
-import appCss from "../styles.css?url";
 // @ts-expect-error - JS module without types
 import App from "../App";
 // @ts-expect-error - JS module without types
@@ -20,11 +19,29 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1rem",
+      }}
+    >
       <div style={{ maxWidth: "28rem", textAlign: "center" }}>
         <h1>This page didn't load</h1>
-        <p>Something went wrong on our end. You can try refreshing or head back home.</p>
-        <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem", justifyContent: "center" }}>
+        <p>
+          Something went wrong on our end. You can try refreshing or head back
+          home.
+        </p>
+        <div
+          style={{
+            marginTop: "1rem",
+            display: "flex",
+            gap: "0.5rem",
+            justifyContent: "center",
+          }}
+        >
           <button
             onClick={() => {
               router.invalidate();
@@ -40,27 +57,57 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Cryptoverse — Live Crypto Prices, Stats & News" },
-      { name: "description", content: "Track live cryptocurrency prices, market stats, exchanges, and the latest crypto news." },
-      { property: "og:title", content: "Cryptoverse — Live Crypto Prices, Stats & News" },
-      { property: "og:description", content: "Track live cryptocurrency prices, market stats, exchanges, and the latest crypto news." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-    ],
-  }),
-  shellComponent: RootShell,
-  component: RootComponent,
-  errorComponent: ErrorComponent,
-});
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+  {
+    head: () => ({
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { title: "Cryptoverse — Live Crypto Prices, Stats & News" },
+        {
+          name: "description",
+          content:
+            "Track live cryptocurrency prices, market stats, exchanges, and the latest crypto news.",
+        },
+        {
+          property: "og:title",
+          content: "Cryptoverse — Live Crypto Prices, Stats & News",
+        },
+        {
+          property: "og:description",
+          content:
+            "Track live cryptocurrency prices, market stats, exchanges, and the latest crypto news.",
+        },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [
+        { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "32x32",
+          href: "/favicon-32x32.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "16x16",
+          href: "/favicon-16x16.png",
+        },
+        { rel: "manifest", href: "/site.webmanifest" },
+      ],
+    }),
+    shellComponent: RootShell,
+    component: RootComponent,
+    errorComponent: ErrorComponent,
+  },
+);
 
 function RootShell({ children }: { children: ReactNode }) {
   return (

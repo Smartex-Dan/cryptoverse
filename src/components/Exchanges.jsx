@@ -1,30 +1,22 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Empty, Typography } from 'antd';
 
-import { useGetExchangesQuery } from '../services/cryptoApi';
-import Loader from './Loader';
+const { Paragraph } = Typography;
 
-// Note: The /exchanges endpoint requires a premium RapidAPI plan, so the
-// table below is rendered empty and the row-mapping logic stays commented
-// out until you're on a plan that supports it.
-const Exchanges = () => {
-  const { isFetching } = useGetExchangesQuery();
-
-  if (isFetching) return <Loader />;
-
-  return (
-    <>
-      <Row>
-        <Col span={6}>Exchanges</Col>
-        <Col span={6}>24h Trade Volume</Col>
-        <Col span={6}>Markets</Col>
-        <Col span={6}>Change</Col>
-      </Row>
-      <Row>
-        {/* Premium endpoint — mapping omitted */}
-      </Row>
-    </>
-  );
-};
+// The /exchanges endpoint on CoinRanking requires a paid RapidAPI plan.
+// We're on the free tier, so skip the request entirely rather than firing
+// a call that will always fail, and show an honest empty state instead.
+const Exchanges = () => (
+  <Empty
+    description={
+      <Paragraph>
+        Exchange data requires a premium CoinRanking plan.
+        <br />
+        Upgrade your RapidAPI subscription to unlock this page.
+      </Paragraph>
+    }
+    style={{ marginTop: '4rem' }}
+  />
+);
 
 export default Exchanges;

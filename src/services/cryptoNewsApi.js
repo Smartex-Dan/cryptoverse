@@ -1,19 +1,17 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const cryptoNewsHeaders = {
-  'x-bingapis-sdk': 'true',
-  'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
-  'x-rapidapi-host': import.meta.env.VITE_NEWS_RAPIDAPI_HOST,
-};
-
-const createRequest = (url) => ({ url, headers: cryptoNewsHeaders });
-
+// Bing News Search (RapidAPI) was retired by Microsoft on Aug 11, 2025 and
+// no longer works regardless of subscription. Using NewsData.io instead —
+// direct API key, no RapidAPI middleman, free tier allows commercial use.
+// Docs: https://newsdata.io/documentation
 export const cryptoNewsApi = createApi({
-  reducerPath: 'cryptoNewsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_NEWS_API_URL }),
+  reducerPath: "cryptoNewsApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "https://newsdata.io/api/1" }),
   endpoints: (builder) => ({
     getCryptoNews: builder.query({
-      query: ({ newsCategory, count }) => createRequest(`/news/search?q=${newsCategory}&safeSearch=Off&textFormat=Raw&freshness=Day&count=${count}`),
+      // Free tier caps at 10 articles/request — asking for more errors out.
+      query: ({ newsCategory, count }) =>
+        `/latest?apikey=${import.meta.env.VITE_NEWSDATA_API_KEY}&q=${encodeURIComponent(newsCategory)}&language=en&size=${Math.min(count, 10)}`,
     }),
   }),
 });
