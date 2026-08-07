@@ -23,7 +23,7 @@ export default defineConfig(({ command }) => ({
     }),
     // Nitro builds the server bundle; only needed for `vite build`.
     // Swap the preset for your host (e.g. "vercel", "netlify", "cloudflare-module").
-    ...(command === "build" ? [nitro({ preset: "node-server" })] : []),
+    ...(command === "build" ? [nitro({ preset: "vercel" })] : []),
     react(),
   ],
 }));
