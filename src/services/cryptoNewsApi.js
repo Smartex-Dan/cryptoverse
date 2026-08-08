@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // Docs: https://newsdata.io/documentation
 export const cryptoNewsApi = createApi({
   reducerPath: "cryptoNewsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://newsdata.io/api/1/latest?" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://newsdata.io/api/1" }),
   endpoints: (builder) => ({
     getCryptoNews: builder.query({
       // Free tier caps at 10 articles/request — asking for more errors out.
