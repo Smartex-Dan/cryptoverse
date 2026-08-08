@@ -12,21 +12,21 @@ const { Text, Title } = Typography;
 const News = ({ simplified }) => {
   const [newsCategory, setNewsCategory] = useState('Cryptocurrency');
   const { data } = useGetCryptosQuery(100);
-  const { data: cryptoNews, isLoading, isError, error } = useGetCryptoNewsQuery({ newsCategory, count: simplified ? 6 : 12 });
+  const {
+    data: cryptoNews,
+    isLoading,
+    isError,
+    error,
+  } = useGetCryptoNewsQuery({ newsCategory, count: simplified ? 6 : 12 });
 
   if (isLoading) return <Loader />;
-  if (isError) {
-    console.error(error);
-    return <Text>Something went wrong.</Text>;
-  } 
-  
-  if (isLoading) return <Loader />;
+
   if (isError) {
     console.error('News API error:', error);
     return <Text type="danger">Couldn't load news right now — check the console for details.</Text>;
   }
-  
-  if (!cryptoNews?.value) return <Loader />;
+
+  if (!cryptoNews?.results) return <Loader />;
 
   const cryptoOptions = [
     { value: 'Cryptocurrency', label: 'Cryptocurrency' },
@@ -48,21 +48,21 @@ const News = ({ simplified }) => {
           />
         </Col>
       )}
-      {cryptoNews.value.map((news, i) => (
-        <Col xs={24} sm={12} lg={8} key={i}>
+      {cryptoNews.results.map((news, i) => (
+        <Col xs={24} sm={12} lg={8} key={news.article_id || i}>
           <Card hoverable className="news-card">
-            <a href={news.url} target="_blank" rel="noreferrer">
+            <a href={news.link} target="_blank" rel="noreferrer">
               <div className="news-image-container">
-                <Title className="news-title" level={4}>{news.name}</Title>
-                <img src={news?.image?.thumbnail?.contentUrl || demoImage} alt="" />
+                <Title className="news-title" level={4}>{news.title}</Title>
+                <img src={news.image_url || demoImage} alt="" />
               </div>
-              <p>{news.description.length > 100 ? `${news.description.substring(0, 100)}...` : news.description}</p>
+              <p>{news.description && news.description.length > 100 ? `${news.description.substring(0, 100)}...` : news.description}</p>
               <div className="provider-container">
                 <div>
-                  <Avatar src={news.provider[0]?.image?.thumbnail?.contentUrl || demoImage} alt="" />
-                  <Text className="provider-name">{news.provider[0]?.name}</Text>
+                  <Avatar src={news.source_icon || demoImage} alt="" />
+                  <Text className="provider-name">{news.source_id}</Text>
                 </div>
-                <Text>{moment(news.datePublished).startOf('ss').fromNow()}</Text>
+                <Text>{moment(news.pubDate).startOf('ss').fromNow()}</Text>
               </div>
             </a>
           </Card>

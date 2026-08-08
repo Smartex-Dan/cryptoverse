@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// Bing News Search (RapidAPI) was retired by Microsoft on Aug 11, 2025 and
-// no longer works regardless of subscription. Using NewsData.io instead —
+// Using NewsData.io instead —
 // direct API key, no RapidAPI middleman, free tier allows commercial use.
 // Docs: https://newsdata.io/documentation
 export const cryptoNewsApi = createApi({
   reducerPath: "cryptoNewsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://newsdata.io/api/1" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://newsdata.io/api/1/latest?" }),
   endpoints: (builder) => ({
     getCryptoNews: builder.query({
       // Free tier caps at 10 articles/request — asking for more errors out.

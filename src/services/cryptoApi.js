@@ -25,6 +25,12 @@ export const cryptoApi = createApi({
         createRequest(`coin/${coinId}/history?timeperiod=${timeperiod}`),
     }),
 
+    // Free-tier: /coins supports orderBy=change, unlike /exchanges which needs a paid plan.
+   getTopMovers: builder.query({
+     query: ({ direction, count }) =>
+       createRequest(`/coins?limit=${count}&orderBy=change&orderDirection=${direction}&timePeriod=24h`),
+   }),
+
     // Note: To access this endpoint you need premium plan
     getExchanges: builder.query({
       query: () => createRequest("/exchanges"),
@@ -35,5 +41,6 @@ export const cryptoApi = createApi({
 export const {
   useGetCryptosQuery,
   useGetCryptoDetailsQuery,
+  useGetTopMoversQuery,
   useGetCryptoHistoryQuery,
 } = cryptoApi;
