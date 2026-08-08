@@ -296,24 +296,36 @@ a:hover{
 }
 .news-image-container{
     display: flex !important;
-    justify-content: space-between !important;
+    flex-direction: column !important;
 }
 .news-title{
-width: 70%;
+    width: 100%;
+    margin-bottom: 12px !important;
 }
 
 .news-image-container .img{
-    width:100px;
-    height:100px;
+    width:100%;
+    height:160px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 .news-card p{
     color: black;
     margin: 10px 0px !important;
 }
+
 .provider-container{
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
+
+.provider-container .ant-avatar {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+ }
+
 .provider-name{
     margin-left: 10px;
 }
